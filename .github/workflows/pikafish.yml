@@ -3,13 +3,13 @@ name: Pikafish
 on:
   push:
     branches:
-      - master
+      - jieqi_old
 
 jobs:	
   windows:	
     strategy:	
       matrix:	
-        arch: ["-vnni512", "-avx512", "-bmi2", "-avx2", "-modern", ""]	
+        arch: ["-bmi2", "-modern"]	
     runs-on: windows-latest
 
     steps:	
@@ -35,8 +35,8 @@ jobs:
   linux:
     strategy:	
       matrix:	
-        arch: ["-avx512", "-bmi2", "-avx2", "-modern", ""]	
-    runs-on: ubuntu-18.04
+        arch: ["-bmi2", "-modern"]	
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v3
@@ -46,10 +46,6 @@ jobs:
 
       - name: copy binary to folder
         run: mkdir linux && cp src/pikafish* linux
-
-      - name: upload to fishtest
-        if: ${{ matrix.arch == '-bmi2' }}
-        run: curl -F engine=@src/pikafish-bmi2 http://test.pikafish.org/api/add_task -F "task_name=${{ github.event.head_commit.message }}" -F "password=${{ secrets.NOTHING }}" -F "game_time=10" -F "inc_time=0.1" -F "depth=-1" -F "nodes=-1" -F "elo0=0" -F "elo1=5" -F "alpha=0.05" -F "beta=0.05" -F "visible=0"
 
       - uses: actions/upload-artifact@v3	
         with:	
