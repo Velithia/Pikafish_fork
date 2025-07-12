@@ -66,7 +66,7 @@ jobs:
           if [[ "${{ matrix.arch }}" == "-bmi2" || "${{ matrix.arch }}" == "-avx2" || "${{ matrix.arch }}" == "-sse41-popcnt" ]]; then
             SDE=""
           fi
-          make -j profile-build EXE=$EXE WINE_PATH="$SDE"
+          make -j EXE=$EXE WINE_PATH="$SDE"
           make strip EXE=$EXE
           cp $EXE ../
       - name: Download wiki
@@ -105,7 +105,7 @@ jobs:
 
       - name: Compile apple-silicon build
         run: |
-          make -j profile-build EXE=$EXE
+          make -j EXE=$EXE
           make strip EXE=$EXE
           cp $EXE ../
       - name: Download wiki
